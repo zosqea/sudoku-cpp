@@ -19,8 +19,8 @@ Sudoku::Sudoku(){
 }
 
 int main(){
-		Sudoku aboba;
-		aboba.printBoard();
+		Sudoku game;
+		game.printBoard();
 		return 0;
 }
 
