@@ -7,6 +7,7 @@ private:
     int board[81] = {};
     bool isValidBoard();
     bool generateBoard(int currentIndex);
+    bool isValidNumber(int newNumberIndex);
 
 public:
     Sudoku();
@@ -58,6 +59,37 @@ bool Sudoku::isValidBoard() {
     return true;
 }
 
+bool Sudoku::isValidNumber(int newNumberIndex){
+    int row = newNumberIndex/9;
+    int col = newNumberIndex%9;
+    int counterRow [10] = {};
+    int counterCol [10] = {};
+    for(int i = 0; i<9; i++){
+        int valueRow = board[row*9+i];
+        int valueCol = board[i*9 + col];
+        if(valueRow){
+            if(counterRow[valueRow]) return false;
+            counterRow[valueRow]++;
+        }
+        if(valueCol){
+            if(counterCol[valueCol]) return false;
+            counterCol[valueCol]++;
+        }
+    }
+    int squarePointer = (row/3)*27+(col/3)*3;
+    int counterSquare [10] = {};
+    for(int i = 0; i < 3; i++){
+        for(int j = 0; j < 3; j++){
+            int squareValue = board[squarePointer + i*9 + j];
+            if(squareValue){
+                if(counterSquare[squareValue]) return false;
+                counterSquare[squareValue]++;
+            }
+        }
+    }
+    return true;
+}
+
 bool Sudoku::generateBoard(int currentIndex) {
     if (currentIndex == 81) return true;
     int choice[9] = {};
@@ -73,7 +105,7 @@ bool Sudoku::generateBoard(int currentIndex) {
 
     for (int i = 0; i < 9; i++) {
         board[currentIndex] = choice[i];
-        if (isValidBoard()) {
+        if (isValidNumber(currentIndex)){
             if (generateBoard(currentIndex + 1)) return true;
         }
         board[currentIndex] = 0;
